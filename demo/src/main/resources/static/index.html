@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Manager Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">Expense<br>Manager</h2>
+
+        <ul class="menu">
+            <li class="active">Dashboard</li>
+            <li>Income</li>
+            <li>Expenses</li>
+            <li>Notifications</li>
+            <li>Settings</li>
+        </ul>
+
+        <div class="budget-card">
+            <p>Budget Used</p>
+            <h3>80%</h3>
+            <span>Total: ₹2500</span>
+            <span>Remaining: ₹500</span>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Dashboard</h1>
+            <div class="actions">
+                <button class="btn add">+ Add Expense</button>
+                <button class="btn view">View Expenses</button>
+            </div>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="cards">
+            <div class="card income">
+                <p>Income</p>
+                <h2 id="incomeAmount">₹0</h2>
+            </div>
+
+            <div class="card expense">
+                <p>Expenses</p>
+                <h2 id="expenseAmount">₹0</h2>
+            </div>
+
+            <div class="card saving">
+                <p>Savings</p>
+                <h2 id="savingAmount">₹0</h2>
+            </div>
+        </div>
+
+        <!-- CHARTS ROW (PARALLEL) -->
+        <div class="charts">
+
+            <!-- BAR CHART -->
+            <div class="chart-box">
+                <h3>Expenses by Week</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+
+            <!-- PIE CHART -->
+            <div class="chart-box">
+                <h3>Spending</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
