@@ -2,84 +2,151 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Expense Manager Dashboard</title>
-
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | WealthWise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-<div class="container">
+<div class="app-container">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
-        <h2 class="logo">Expense<br>Manager</h2>
+        <div class="sidebar-header">
+            <h1 class="logo">WealthWise</h1>
+        </div>
 
-        <ul class="menu">
-            <li class="active">Dashboard</li>
-            <li>Income</li>
-            <li>Expenses</li>
-            <li>Notifications</li>
-            <li>Settings</li>
-        </ul>
+        <nav class="sidebar-menu">
+            <ul>
+                <li class="menu-item active">
+                    <span class="icon">📊</span> Dashboard
+                </li>
+            </ul>
+        </nav>
 
-        <div class="budget-card">
-            <p>Budget Used</p>
-            <h3>80%</h3>
-            <span>Total: ₹2500</span>
-            <span>Remaining: ₹500</span>
+        <!-- USER PROFILE CARD -->
+        <div class="profile-card">
+            <div class="profile-info">
+                <div class="avatar" id="avatarName">U</div>
+                <div>
+                    <h4 id="userName">User Name</h4>
+                    <p id="userEmail">user@example.com</p>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="logout-btn">Logout</button>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="main">
-
+    <!-- MAIN PANEL -->
+    <main class="main-content">
         <!-- HEADER -->
-        <div class="header">
-            <h1>Dashboard</h1>
+        <header class="header">
+            <div>
+                <h1 id="greeting">Welcome back!</h1>
+                <p class="subtitle">Here's a breakdown of your finances.</p>
+            </div>
             <div class="actions">
-                <button class="btn add">+ Add Expense</button>
-                <button class="btn view">View Expenses</button>
+                <button class="btn btn-primary" onclick="openModal()">+ Add Transaction</button>
             </div>
-        </div>
+        </header>
 
-        <!-- SUMMARY CARDS -->
-        <div class="cards">
-            <div class="card income">
-                <p>Income</p>
-                <h2 id="incomeAmount">₹0</h2>
+        <!-- CARDS -->
+        <section class="metrics-grid">
+            <div class="metric-card card-income">
+                <div class="card-icon">💸</div>
+                <div class="card-body">
+                    <p>Total Income</p>
+                    <h2 id="incomeAmount">₹0.00</h2>
+                </div>
             </div>
-
-            <div class="card expense">
-                <p>Expenses</p>
-                <h2 id="expenseAmount">₹0</h2>
+            <div class="metric-card card-expense">
+                <div class="card-icon">💳</div>
+                <div class="card-body">
+                    <p>Total Expenses</p>
+                    <h2 id="expenseAmount">₹0.00</h2>
+                </div>
             </div>
-
-            <div class="card saving">
-                <p>Savings</p>
-                <h2 id="savingAmount">₹0</h2>
+            <div class="metric-card card-saving">
+                <div class="card-icon">🛡️</div>
+                <div class="card-body">
+                    <p>Net Savings</p>
+                    <h2 id="savingAmount">₹0.00</h2>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- CHARTS ROW (PARALLEL) -->
-        <div class="charts">
-
-            <!-- BAR CHART -->
+        <!-- CHARTS SECTION -->
+        <section class="charts-grid">
             <div class="chart-box">
-                <h3>Expenses by Week</h3>
-                <canvas id="barChart"></canvas>
+                <h3>Weekly Spending Trend</h3>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
             </div>
-
-            <!-- PIE CHART -->
             <div class="chart-box">
-                <h3>Spending</h3>
-                <canvas id="pieChart"></canvas>
+                <h3>Category Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
             </div>
+        </section>
 
-        </div>
-
+        <!-- RECENT TRANSACTIONS -->
+        <section class="transactions-section">
+            <div class="section-header">
+                <h3>Recent Transactions</h3>
+            </div>
+            <div class="table-container">
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionList">
+                        <!-- Dynamic items -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
+
+</div>
+
+<!-- TRANSACTION MODAL -->
+<div id="transactionModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2>Add Transaction</h2>
+        <form id="transaction-form" onsubmit="handleSaveTransaction(event)">
+            <div class="form-group">
+                <label for="tx-amount">Amount (₹)</label>
+                <input type="number" step="0.01" id="tx-amount" required placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+                <label for="tx-type">Transaction Type</label>
+                <select id="tx-type" required>
+                    <option value="EXPENSE">Expense</option>
+                    <option value="INCOME">Income</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tx-category">Category</label>
+                <input type="text" id="tx-category" required placeholder="e.g. Salary, Food, Rent, Shopping">
+            </div>
+            <div class="form-group">
+                <label for="tx-date">Date</label>
+                <input type="date" id="tx-date" required>
+            </div>
+            <button type="submit" class="modal-submit-btn">Save Transaction</button>
+        </form>
+    </div>
 </div>
 
 <script src="script.js"></script>

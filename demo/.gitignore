@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local databases and temp scripts
+data/
+extracted_css/
+full_read_*.css
+full_step_*.css
+clean_step_*.css
+*.py
+*.txt
