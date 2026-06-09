@@ -1,11 +1,11 @@
-# Build stage
-FROM maven:3.8.5-openjdk-17 AS build
+# Build stage using active Eclipse Temurin Maven image
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Run stage
-FROM openjdk:17-jdk-slim
+# Run stage using official Eclipse Temurin JRE image
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/Expensemanagement-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
